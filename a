@@ -12,19 +12,22 @@ cdb = sqlite3.connect('Database_file.db')
 c = cdb.cursor()
 
 # CreateTable
-def create():
+def create_t():
     cdb = sqlite3.connect('Database_file.db')
     c = cdb.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS addresses (
 rm INTEGER, 
 name TEXT, 
-date INTEGER, 
-cons INTEGER)''')
-cdb.commit()
+_date INTEGER, 
+cons INTEGER)'''
+)
+    cdb.commit()
+
+create_t()
 
 # Frame
 rec_frame = LabelFrame(root, text='Records')
-rec_frame.pack()
+rec_frame.pack(fill='both', pady=5, padx=5)
 info_frame = LabelFrame(root, text='Information')
 info_frame.pack(padx=5, pady=5)
 
@@ -49,7 +52,7 @@ ec_label.grid(row=3, column=0)
 
 # Treeview
 trv = ttk.Treeview(rec_frame, columns=(1, 2, 3, 4), show='headings', height=5)
-trv.pack()
+trv.pack(fill='both', padx=5, pady=5)
 
 trv.heading(1, text='#')
 trv.heading(2, text='Name')
@@ -70,21 +73,21 @@ cmb.current()
 
 # Submit Function
 def submit():
-    cdb = sqlite3.connect('Database_file.db')
-    c = cdb.cursor()
-    c.execute('INSERT INTO addresses VALUES (:rm, :name, :date, :cons)',
-              {
-                  'rm': rm_num.get(),
-                  'name': name.get(),
-                  'ds': ds.get(),
-                  'ec': ec.get()
-              }
-              )
+  cdb = sqlite3.connect('Database_file.db')
+  c = cdb.cursor()
+  c.execute('INSERT INTO addresses VALUES (:rm, :name, :_date, :cons)',
+            {
+                'rm': cmb.get(),
+                'name': name.get(),
+                '_date': ds.get(),
+                'cons': ec.get()
+            }
+            )
 
-    cdb.commit()
-    rm_num.delete(0, END)
-    name.delete(0, END)
-    ec.delete(0, END)
+  cdb.commit()
+  cmb.delete(0, END)
+  name.delete(0, END)
+  ec.delete(0, END)
 
 
 # Submit Button
