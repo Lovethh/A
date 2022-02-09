@@ -59,7 +59,7 @@ trv.heading(2, text='Client Name')
 trv.heading(3, text='Date Started')
 trv.heading(4, text='Electricity Consump.')
 
-trv.column(1, width=3)
+trv.column(1, width=70)
 trv.column(2, width=300)
 trv.column(3, width=300)
 trv.column(4, width=300)
