@@ -16,10 +16,10 @@ def create_t():
     cdb = sqlite3.connect('Database_file.db')
     c = cdb.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS addresses (
-rm INTEGER, 
-name TEXT, 
-_date INTEGER, 
-cons INTEGER)'''
+room_number INTEGER, 
+client_name TEXT, 
+date_started INTEGER, 
+elec_consump INTEGER)'''
 )
     cdb.commit()
 
@@ -41,23 +41,23 @@ ec = Entry(info_frame, width=20)
 ec.grid(row=3, column=1, pady=5)
 
 # LabelBox
-rm_num_label = Label(info_frame, text='#')
+rm_num_label = Label(info_frame, text='Room No.')
 rm_num_label.grid(row=0, column=0)
-name_label = Label(info_frame, text='Name')
+name_label = Label(info_frame, text='Client Name')
 name_label.grid(row=1, column=0)
-ds_label = Label(info_frame, text='DS')
+ds_label = Label(info_frame, text='Date Started')
 ds_label.grid(row=2, column=0)
-ec_label = Label(info_frame, text='EC')
+ec_label = Label(info_frame, text='Electricity Consump.')
 ec_label.grid(row=3, column=0)
 
 # Treeview
 trv = ttk.Treeview(rec_frame, columns=(1, 2, 3, 4), show='headings', height=5)
 trv.pack(fill='both', padx=5, pady=5)
 
-trv.heading(1, text='#')
-trv.heading(2, text='Name')
-trv.heading(3, text='DS')
-trv.heading(4, text='EC')
+trv.heading(1, text='Room No.')
+trv.heading(2, text='Client Name')
+trv.heading(3, text='Date Started')
+trv.heading(4, text='Electricity Consump.')
 
 trv.column(1, width=3)
 trv.column(2, width=300)
@@ -75,12 +75,12 @@ cmb.current()
 def submit():
   cdb = sqlite3.connect('Database_file.db')
   c = cdb.cursor()
-  c.execute('INSERT INTO addresses VALUES (:rm, :name, :_date, :cons)',
+  c.execute('INSERT INTO addresses VALUES (:room_number, :client_name, :date_started, :elec_consump)',
             {
-                'rm': cmb.get(),
-                'name': name.get(),
-                '_date': ds.get(),
-                'cons': ec.get()
+                'room_number': cmb.get(),
+                'client_name': name.get(),
+                'date_started': ds.get(),
+                'elec_consump': ec.get()
             }
             )
 
