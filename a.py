@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkcalendar import *
+from tkinter import messagebox
 import sqlite3
 
 root = Tk()
@@ -32,7 +33,6 @@ info_frame = LabelFrame(root, text='Information')
 info_frame.pack(padx=5, pady=5)
 
 # Create TextBox
-rm_num = Entry(info_frame, width=20)
 name = Entry(info_frame, width=20)
 name.grid(row=1, column=1, pady=5)
 ds = DateEntry(info_frame, width=17)
@@ -51,7 +51,7 @@ ec_label = Label(info_frame, text='Electricity Consump.')
 ec_label.grid(row=3, column=0)
 
 # Treeview
-trv = ttk.Treeview(rec_frame, columns=(1, 2, 3, 4), show='headings', height=5)
+trv = ttk.Treeview(rec_frame, columns=(1, 2, 3, 4), show='headings', height=10)
 trv.pack(fill='both', padx=5, pady=5)
 
 trv.heading(1, text='Room No.')
@@ -70,8 +70,19 @@ cmb = ttk.Combobox(info_frame, value=rm, width=17)
 cmb.grid(row=0, column=1, pady=5)
 cmb.current()
 
+def update(rows):
+    for val in rows:
+       trv.insert(parent='', index='end', values=val)
 
-# Submit Function
+def display_data():
+    cdb = sqlite3.connect('Database_file.db')
+    c = cdb.cursor()
+    c.execute('SELECT * FROM addresses')
+    rows = c.fetchall()
+    update(rows)
+    cdb.commit()
+    cdb.close()
+
 def submit():
   cdb = sqlite3.connect('Database_file.db')
   c = cdb.cursor()
@@ -83,11 +94,13 @@ def submit():
                 'elec_consump': ec.get()
             }
             )
-
+  messagebox.showinfo('', 'Data Added Successfully')
   cdb.commit()
   cmb.delete(0, END)
   name.delete(0, END)
   ec.delete(0, END)
+  trv.delete(*trv.get_children())
+  display_data()
 
 
 # Submit Button
@@ -103,5 +116,5 @@ cdb.commit()
 
 # Close connection
 cdb.close()
-
+display_data()
 root.mainloop()
